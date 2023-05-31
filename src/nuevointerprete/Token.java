@@ -21,7 +21,27 @@ public class Token {
         this.literal = literal;
         this.linea = linea;
     }
+    
+    public Token(Tipo_Token tipo, String lexema) {
+        this.tipo = tipo;
+        this.lexema = lexema;
+        this.literal = null;
+        this.linea = 0;
+    }
+    
+   @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Token)) {
+            return false;
+        }
 
+        if(this.tipo == ((Token)o).tipo){
+            return true;
+        }
+
+        return false;
+    }
+    
     @Override
     public String toString(){
         return "Linea [" + linea + "]: " + tipo + " " + lexema + " " + literal;

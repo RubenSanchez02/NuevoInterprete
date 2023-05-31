@@ -70,6 +70,8 @@ public enum Tipo_Token {
    LLAVE_DER,
    LLAVE_IZQ,
    NUEVAL,
+   
+   DECLARACION,
     // Final de cadena
     EOF
 }
