@@ -198,46 +198,120 @@ public class Parser {
     
     void LOGIC_AND_2(){
     }
-    
+
     void EQUALITY(){
+        COMPARISON();
+        EQUALITY_2();
     }
-    
+
     void EQUALITY_2(){
+        coincidir(diferente_de);
+        COMPARISON();
+        EQUALITY_2();
+
+        coincidir(igual);
+        COMPARISON();
+        EQUALITY_2();
     }
-    
+
     void COMPARISON(){
+        TERM();
+        COMPARISON_2();
     }
-    
+
     void COMPARISON_2(){
+        coincidir(mayor);
+        TERM();
+        COMPARISON_2();
+
+        coincidir(mayor_igual);
+        TERM();
+        COMPARISON_2();
+
+        coincidir(menor);
+        TERM();
+        COMPARISON_2();
+
+        coincidir(menor_igual);
+        TERM();
+        COMPARISON_2();
     }
-    
+
     void TERM(){
+        FACTOR();
+        TERM2();
     }
-    
+
     void TERM2(){
+        coincidir(decremento);
+        FACTOR();
+        TERM2();
+
+        coincidir(suma);
+        FACTOR();
+        TERM2();
     }
-    
+
     void FACTOR(){
+        UNARY();
+        FACTOR_2();
     }
-    
+
     void FACTOR_2(){
+        coincidir(division);
+        UNARY();
+        FACTOR_2();
+
+        coincidir(multiplicacion);
+        UNARY();
+        FACTOR_2();
     }
-    
+
     void UNARY(){
+        coincidir(no);
+        UNARY();
+
+        coincidir(decremento);
+        UNARY();
+
+        CALL();
     }
-    
+
     void CALL(){
+        PRIMARY();
+        CALL_2();
     }
-    
+
     void CALL_2(){
+        coincidir(parentesis_izq);
+        ARGUMENTS_OPC();
+        coincidir(parentesis_der);
+        CALL_2();
     }
-    
+
     void CALL_OPC(){
+        CALL();
+        coincidir(punto);
     }
-    
+
     void PRIMARY(){
+        coincidir(verdadero);
+        coincidir(falso);
+        coincidir(nulo);
+        coincidir(este);
+        coincidir(numero);
+        coincidir(cadena);
+        coincidir(identificador);
+
+        coincidir(parentesis_izq);
+        EXPRESSION();
+        coincidir(parentesis_der);
+
+        coincidir(supr);
+        coincidir(punto);
+        coincidir(identificador);
     }
-    
+
     void FUNCTION(){
         if(preanalisis.equals(identificador)){
             coincidir(identificador);
@@ -249,36 +323,48 @@ public class Parser {
             System.out.println("Error en la posición " + preanalisis.linea + ". Se esperaba un.");
         }
     }
-    
+
     void FUNCTIONS(){
-      if(hayErrores) return;
+        if(hayErrores) return;
 
         if(preanalisis.equals(llave_izq)){
             FUNCTION();
             FUNCTIONS();
         }
     }
-    
-    void PARAMETERS_OPC(){
-    }
-    
-    void PARAMETERS(){
-    }
-    
-    void PARAMETERS_2(){
-    }
-    
-    void ARGUMENTS_OPC(){
-    }
-    
-    void ARGUMENTS(){
-    }
-    
-    void ARGUMENTS_2(){
-    }
-    
 
-    
+    void PARAMETERS_OPC(){
+        PARAMETERS();
+    }
+
+    void PARAMETERS(){
+        coincidir(identificador);
+        PARAMETERS_2();
+    }
+
+    void PARAMETERS_2(){
+        coincidir(coma);
+        coincidir(identificador);
+        PARAMETERS_2();
+    }
+
+    void ARGUMENTS_OPC(){
+        ARGUMENTS();
+    }
+
+    void ARGUMENTS(){
+        EXPRESSION();
+        ARGUMENTS_2();
+    }
+
+    void ARGUMENTS_2(){
+        coincidir(coma);
+        EXPRESSION();
+        ARGUMENTS_2();
+    }
+
+
+
     void coincidir(Token t){
         if(hayErrores) return;
 
