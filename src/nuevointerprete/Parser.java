@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package nuevointerprete;
+import java.beans.Expression;
 import java.util.List;
 /**
  *
@@ -131,72 +132,168 @@ public class Parser {
     }
     
     void FUN_DECL(){
+        coincidir(funcion);
+        FUNCTION();
     }
     
     void VAR_DECL(){
+        coincidir(variable);
+        coincidir(identificador);
+        VAR_INIT();
+        coincidir(punto_y_coma);
     }
     
     void VAR_INIT(){
+        coincidir(asignar);
+        EXPRESSION();
+
+        if(hayErrores) return;
     }
 
     void STATEMENT(){
+        EXPR_STMT();
+
+        FOR_STMT();
+
+        IF_STMT();
+
+        PRINT_STMT();
+
+        RETURN_STMT();
+
+        WHILE_STMT();
+
+        BLOCK();
     }
     
     void EXPR_STMT(){
+        EXPRESSION();
+        coincidir(punto_y_coma);
     }
     
     void FOR_STMT(){
+        coincidir(para);
+        coincidir(parentesis_izq);
+        FOR_STMT_1();
+        FOR_STMT_2();
+        FOR_STMT_3();
+        coincidir(parentesis_der);
+        STATEMENT();
     }
     
     void FOR_STMT_1(){
+        VAR_DECL();
+
+        EXPR_STMT();
+
+        coincidir(punto_y_coma);
     }
     
     void FOR_STMT_2(){
+        EXPRESSION();
+        coincidir(punto_y_coma);
+
+        coincidir(punto_y_coma);
     }
     
     void FOR_STMT_3(){
+        EXPRESSION();
+
+        if(hayErrores) return;
     }
     
     void IF_STMT(){
+        coincidir(si);
+        coincidir(parentesis_izq);
+        EXPRESSION();
+        coincidir(parentesis_der);
+        STATEMENT();
+        ELSE_STATEMENT();
     }
     
     void ELSE_STATEMENT(){
+        coincidir(ademas);
+        STATEMENT();
+
+        if(hayErrores) return;
     }
     
     void PRINT_STMT(){
+        coincidir(imprimir);
+        EXPRESSION();
     }
     
     void RETURN_STMT(){
+        coincidir(devolver);
+        RETURN_EXP_OPC();
     }
     
     void RETURN_EXP_OPC(){
+        EXPRESSION();
+
+        if(hayErrores) return;
     }
     
     void WHILE_STMT(){
+        coincidir(mientras);
+        coincidir(parentesis_izq);
+        EXPRESSION();
+        coincidir(parentesis_der);
+        STATEMENT();
     }
     
     void BLOCK(){
+        coincidir(llave_izq);
+        BLOCK_DECL();
+        coincidir(llave_der);
     }
     
     void BLOCK_DECL(){
+        DECLARATION();
+        BLOCK_DECL();
+
+        if(hayErrores) return;
     }
     
     void EXPRESSION(){
+        EXPRESSION();
     }
     
     void ASSIGNEMENT(){
+        LOGIC_OR();
+        ASSIGNEMENT_OPC();
     }
-    
+
+    void ASSIGNEMENT_OPC(){
+        coincidir(asignar);
+        EXPRESSION();
+
+        if(hayErrores) return;
+    }
     void LOGIC_OR(){
+        LOGIC_AND();
+        LOGIC_OR_2();
     }
     
     void LOGIC_OR_2(){
+        coincidir(o);
+        LOGIC_AND();
+        LOGIC_OR_2();
+
+        if(hayErrores) return;
     }
     
     void LOGIC_AND(){
+        EQUALITY();
+        LOGIC_AND_2();
     }
     
     void LOGIC_AND_2(){
+        coincidir(ademas);
+        EQUALITY();
+        LOGIC_AND_2();
+
+        if(hayErrores) return;
     }
 
     void EQUALITY(){
@@ -212,11 +309,14 @@ public class Parser {
         coincidir(igual);
         COMPARISON();
         EQUALITY_2();
+
+        if(hayErrores) return;
     }
 
     void COMPARISON(){
         TERM();
         COMPARISON_2();
+
     }
 
     void COMPARISON_2(){
@@ -235,6 +335,8 @@ public class Parser {
         coincidir(menor_igual);
         TERM();
         COMPARISON_2();
+
+        if(hayErrores) return;
     }
 
     void TERM(){
@@ -250,6 +352,8 @@ public class Parser {
         coincidir(suma);
         FACTOR();
         TERM2();
+
+        if(hayErrores) return;
     }
 
     void FACTOR(){
@@ -265,6 +369,8 @@ public class Parser {
         coincidir(multiplicacion);
         UNARY();
         FACTOR_2();
+
+        if(hayErrores) return;
     }
 
     void UNARY(){
@@ -287,20 +393,35 @@ public class Parser {
         ARGUMENTS_OPC();
         coincidir(parentesis_der);
         CALL_2();
+
+        coincidir(punto);
+        coincidir(identificador);
+        CALL_2();
+
+        if(hayErrores) return;
     }
 
     void CALL_OPC(){
         CALL();
         coincidir(punto);
+
+        if(hayErrores) return;
     }
 
     void PRIMARY(){
+
         coincidir(verdadero);
+
         coincidir(falso);
+
         coincidir(nulo);
+
         coincidir(este);
+
         coincidir(numero);
+
         coincidir(cadena);
+
         coincidir(identificador);
 
         coincidir(parentesis_izq);
@@ -335,6 +456,8 @@ public class Parser {
 
     void PARAMETERS_OPC(){
         PARAMETERS();
+
+        if(hayErrores) return;
     }
 
     void PARAMETERS(){
@@ -346,10 +469,14 @@ public class Parser {
         coincidir(coma);
         coincidir(identificador);
         PARAMETERS_2();
+
+        if(hayErrores) return;
     }
 
     void ARGUMENTS_OPC(){
         ARGUMENTS();
+
+        if(hayErrores) return;
     }
 
     void ARGUMENTS(){
@@ -361,6 +488,9 @@ public class Parser {
         coincidir(coma);
         EXPRESSION();
         ARGUMENTS_2();
+
+        if(hayErrores) return;
+
     }
 
 
