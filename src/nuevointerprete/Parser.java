@@ -440,25 +440,39 @@ public class Parser {
     }
 
     void TERM(){
-        FACTOR();
-        TERM2();
+        if(hayErrores) return;
+        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            FACTOR();
+            TERM2();
+        }
+        else {
+            System.out.println("Error");
+        }
     }
 
     void TERM2(){
-        coincidir(decremento);
-        FACTOR();
-        TERM2();
-
-        coincidir(suma);
-        FACTOR();
-        TERM2();
-
         if(hayErrores) return;
+        if (preanalisis.equals(decremento)||preanalisis.equals(suma)){
+            coincidir(decremento);
+            FACTOR();
+            TERM2();
+            coincidir(suma);
+            FACTOR();
+            TERM2();
+        }
+
     }
 
+
     void FACTOR(){
-        UNARY();
-        FACTOR_2();
+        if(hayErrores) return;
+        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            UNARY();
+            FACTOR_2();
+        }
+        else{
+            System.out.println("Error");
+        }
     }
 
     void FACTOR_2(){
@@ -474,70 +488,84 @@ public class Parser {
     }
 
     void UNARY(){
-        coincidir(no);
-        UNARY();
-
-        coincidir(decremento);
-        UNARY();
-
-        CALL();
+        if(hayErrores) return;
+        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            coincidir(no);
+            UNARY();
+            coincidir(decremento);
+            UNARY();
+            CALL();
+        }
+        else {
+            System.out.println("Error");
+        }
     }
 
     void CALL(){
-        PRIMARY();
-        CALL_2();
+        if(hayErrores) return;
+        if(preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            PRIMARY();
+            CALL_2();
+        }
+        else {
+            System.out.println("Error");
+        }
     }
 
     void CALL_2(){
-        coincidir(parentesis_izq);
-        ARGUMENTS_OPC();
-        coincidir(parentesis_der);
-        CALL_2();
-
-        coincidir(punto);
-        coincidir(identificador);
-        CALL_2();
-
         if(hayErrores) return;
+        if(preanalisis.equals(parentesis_izq)||preanalisis.equals(punto)) {
+            coincidir(parentesis_izq);
+            ARGUMENTS_OPC();
+            coincidir(parentesis_der);
+            CALL_2();
+            coincidir(punto);
+            coincidir(identificador);
+            CALL_2();
+        }
+
+
     }
 
     void CALL_OPC(){
-        CALL();
-        coincidir(punto);
-
         if(hayErrores) return;
+        if(preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            CALL();
+            coincidir(punto);
+        }
+
     }
 
+
     void PRIMARY(){
-
-        coincidir(verdadero);
-
-        coincidir(falso);
-
-        coincidir(nulo);
-
-        coincidir(este);
-
-        coincidir(numero);
-
-        coincidir(cadena);
-
-        coincidir(identificador);
-
-        coincidir(parentesis_izq);
-        EXPRESSION();
-        coincidir(parentesis_der);
-
-        coincidir(supr);
-        coincidir(punto);
-        coincidir(identificador);
+        if(hayErrores) return;
+        if(preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            coincidir(verdadero);
+            coincidir(falso);
+            coincidir(nulo);
+            coincidir(este);
+            coincidir(numero);
+            coincidir(cadena);
+            coincidir(identificador);
+            coincidir(parentesis_izq);
+            EXPRESSION();
+            coincidir(parentesis_der);
+            coincidir(supr);
+            coincidir(punto);
+            coincidir(identificador);
+        }
+        else {
+            System.out.println("Error");
+        }
     }
 
     void FUNCTION(){
         if(preanalisis.equals(identificador)){
             coincidir(identificador);
             coincidir(parentesis_izq);
+            PARAMETERS_OPC();
             coincidir(parentesis_der);
+            BLOCK();
         }
         else{
             hayErrores = true;
@@ -548,48 +576,68 @@ public class Parser {
     void FUNCTIONS(){
         if(hayErrores) return;
 
-        if(preanalisis.equals(llave_izq)){
+        if(preanalisis.equals(identificador)){
             FUNCTION();
             FUNCTIONS();
         }
     }
 
     void PARAMETERS_OPC(){
-        PARAMETERS();
-
         if(hayErrores) return;
+        if(preanalisis.equals(identificador)) {
+            PARAMETERS();
+        }
     }
 
     void PARAMETERS(){
-        coincidir(identificador);
-        PARAMETERS_2();
+        if(hayErrores) return;
+        if(preanalisis.equals(identificador)) {
+            coincidir(identificador);
+            PARAMETERS_2();
+        }
+        else{
+            System.out.println("Error");
+        }
     }
 
     void PARAMETERS_2(){
-        coincidir(coma);
-        coincidir(identificador);
-        PARAMETERS_2();
-
         if(hayErrores) return;
+        if(preanalisis.equals(coma)) {
+            coincidir(coma);
+            coincidir(identificador);
+            PARAMETERS_2();
+        }
+
     }
 
     void ARGUMENTS_OPC(){
-        ARGUMENTS();
-
         if(hayErrores) return;
+        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            ARGUMENTS();
+        }
+
     }
 
     void ARGUMENTS(){
-        EXPRESSION();
-        ARGUMENTS_2();
+        if(hayErrores) return;
+        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+            EXPRESSION();
+            ARGUMENTS_2();
+        }
+        else{
+            System.out.println("Error");
+        }
     }
 
     void ARGUMENTS_2(){
-        coincidir(coma);
-        EXPRESSION();
-        ARGUMENTS_2();
 
         if(hayErrores) return;
+        if (preanalisis.equals(coma))
+        {
+            coincidir(coma);
+            EXPRESSION();
+            ARGUMENTS_2();
+        }
 
     }
 
