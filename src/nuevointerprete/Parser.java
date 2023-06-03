@@ -335,6 +335,7 @@ public class Parser {
     
     void BLOCK_DECL(){
         if (hayErrores) return;
+        if(preanalisis.equals())
         DECLARATION();
         BLOCK_DECL();
 
@@ -382,6 +383,7 @@ public class Parser {
     }
     
     void LOGIC_AND(){
+
         EQUALITY();
         LOGIC_AND_2();
     }
