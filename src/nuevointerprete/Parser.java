@@ -40,7 +40,7 @@ public class Parser {
     private final Token mayor_igual = new Token(Tipo_Token.MAYOR_IGUAL, ">=");
     private final Token numero = new Token(Tipo_Token.COMA, ",");
     private final Token cadena = new Token(Tipo_Token.EOF, "");
-    private final Token logico = new Token(Tipo_Token.COMA, ",");
+    private final Token logico = new Token(Tipo_Token.COMA, "logico");
     private final Token identificador = new Token(Tipo_Token.IDENTIFICADOR, "");
     //private final Token letra = new Token(Tipo_Token, "");
     private final Token coma = new Token(Tipo_Token.COMA, ",");
@@ -63,7 +63,6 @@ public class Parser {
     private final Token llave_der = new Token(Tipo_Token.LLAVE_DER, "}");
     private final Token punto = new Token(Tipo_Token.PUNTO, ".");
     private final Token punto_y_coma = new Token(Tipo_Token.PUNTO_Y_COMA, ";");
-    private final Token declaracion = new Token(Tipo_Token.EOF, "");
     private final Token finCadena = new Token(Tipo_Token.EOF, "");
 
     private int i = 0;
@@ -676,7 +675,7 @@ public class Parser {
 
     void ARGUMENTS_OPC(){
         if(hayErrores) return;
-        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+        if(preanalisis.equals(no)||preanalisis.equals(resta)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
             ARGUMENTS();
         }
 
@@ -684,7 +683,7 @@ public class Parser {
 
     void ARGUMENTS(){
         if(hayErrores) return;
-        if(preanalisis.equals(no)||preanalisis.equals(decremento)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
+        if(preanalisis.equals(no)||preanalisis.equals(resta)||preanalisis.equals(verdadero)||preanalisis.equals(falso)||preanalisis.equals(nulo)||preanalisis.equals(este)||preanalisis.equals(numero)||preanalisis.equals(cadena)||preanalisis.equals(identificador)||preanalisis.equals(parentesis_izq)||preanalisis.equals(supr)) {
             EXPRESSION();
             ARGUMENTS_2();
         }
@@ -714,7 +713,7 @@ public class Parser {
         }
         else{
             hayErrores = true;
-            System.out.println("Error en la posición " + preanalisis.linea + ". Se esperaba un  " + t.tipo);
+            System.out.println(preanalisis.linea + ") Error en la posición: " + i + " Se esperaba un:  " + t.tipo);
 
         }
     }
