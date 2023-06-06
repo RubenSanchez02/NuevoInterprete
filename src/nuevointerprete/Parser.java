@@ -91,16 +91,8 @@ public class Parser {
     }
 
     void PROGRAM(){
-        if(hayErrores) return;
-        
-        if(preanalisis.equals(clase) || preanalisis.equals(funcion) || preanalisis.equals(variable) || preanalisis.equals(no) || preanalisis.equals(resta) || preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) || preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr) ||preanalisis.equals(nulo) || preanalisis.equals(imprimir) || preanalisis.equals(devolver) || preanalisis.equals(mientras) || preanalisis.equals(para) || preanalisis.equals(si) || preanalisis.equals(llave_izq) ){
         DECLARATION();
-        }
-        else {
-            System.out.println("Error"); //Verificar
-        }
-    
-    }
+       }
     
     void DECLARATION(){
         if(hayErrores) return;
@@ -196,16 +188,13 @@ public class Parser {
 
         else if(preanalisis.equals(imprimir)) {
             PRINT_STMT();
-        }
-
-        if(preanalisis.equals(devolver)) {
+        }else if(preanalisis.equals(devolver)) {
             RETURN_STMT();
         }
 
         else if(preanalisis.equals(mientras)) {
             WHILE_STMT();
         }
-
         else if(preanalisis.equals(llave_izq)){
             BLOCK();
         }
@@ -261,7 +250,7 @@ public class Parser {
             EXPRESSION();
             coincidir(punto_y_coma);
         }
-        if(preanalisis.equals(punto_y_coma)){
+        else if(preanalisis.equals(punto_y_coma)){
             coincidir(punto_y_coma);
         }
         else {
@@ -367,9 +356,9 @@ public class Parser {
         if(preanalisis.equals(no) || preanalisis.equals(resta) || preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) || preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr)) { 
             ASSIGNEMENT();
         }
-        else{
+        /*else{
             System.out.println("Error");
-        }
+        }*/
     }
     
     void ASSIGNEMENT(){
@@ -620,6 +609,7 @@ public class Parser {
     }
 
     void FUNCTION(){
+        if(hayErrores) return;
         if(preanalisis.equals(identificador)){
             coincidir(identificador);
             coincidir(parentesis_izq);
@@ -628,7 +618,6 @@ public class Parser {
             BLOCK();
         }
         else{
-            hayErrores = true;
             System.out.println("Error ");
         }
     }
