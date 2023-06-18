@@ -72,15 +72,18 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    public void parse(){
+    public boolean parse(){
+
         i = 0;
         preanalisis = tokens.get(i);
         PROGRAM();
         if(!hayErrores && !preanalisis.equals(finCadena)){
             System.out.println("Error en la posición " + preanalisis.linea + ". No se esperaba el token " + preanalisis.tipo);
+            return false;
         }
         else if(!hayErrores && preanalisis.equals(finCadena)){
-            System.out.println("Consulta válida");
+            //System.out.println("Consulta válida");
+            return true;
         }
 
         /*if(!preanalisis.equals(finCadena)){
@@ -88,6 +91,7 @@ public class Parser {
         }else if(!hayErrores){
             System.out.println("Consulta válida");
         }*/
+        return true;
     }
 
     void PROGRAM(){

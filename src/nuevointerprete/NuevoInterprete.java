@@ -67,6 +67,13 @@ public class NuevoInterprete {
         }*/
         Parser parser = new Parser(tokens);
         parser.parse();
+        //cachar el booleano
+
+        if (parser==true){
+            //abrir codigo postijo
+
+        }
+
     }
     
     static void error(int linea, String mensaje){
