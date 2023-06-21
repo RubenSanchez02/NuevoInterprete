@@ -68,9 +68,12 @@ public class NuevoInterprete {
         Parser parser = new Parser(tokens);
         parser.parse();
         //cachar el booleano
+        boolean pser = parser.parse();
 
-        if (parser==true){
+        if (pser==true)
+        {
             //abrir codigo postijo
+            System.out.println("prueba verdadera");
 
         }
 
