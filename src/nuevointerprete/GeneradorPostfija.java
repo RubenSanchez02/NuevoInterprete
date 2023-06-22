@@ -12,12 +12,14 @@ public class GeneradorPostfija {
     private final List<Token> postfija;
 
     public GeneradorPostfija(List<Token> infija) {
+
         this.infija = infija;
         this.pila = new Stack<>();
         this.postfija = new ArrayList<>();
     }
 
     public List<Token> convertir(){
+
         boolean estructuraDeControl = false;
         Stack<Token> pilaEstructurasDeControl = new Stack<>();
 
@@ -115,5 +117,4 @@ public class GeneradorPostfija {
         return postfija;
     }
 
-}
 }

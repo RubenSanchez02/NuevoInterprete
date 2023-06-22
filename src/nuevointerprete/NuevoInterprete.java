@@ -66,16 +66,22 @@ public class NuevoInterprete {
             System.out.println(token);
         }*/
         Parser parser = new Parser(tokens);
-        parser.parse();
         //cachar el booleano
         boolean pser = parser.parse();
 
-        if (pser==true)
+        if (pser)
         {
-            //abrir codigo postijo
-            System.out.println("prueba verdadera");
+            GeneradorPostfija gpf = new GeneradorPostfija(tokens);
+            List<Token> postfija = gpf.convertir();
+            GeneradorAST gast = new GeneradorAST(postfija);
+            Arbol programa= gast.generarAST();
+            programa.recorrer();
+            System.out.println("si jala");
+        } else {
+            System.out.println("Pues no chavo");
 
         }
+
 
     }
     
@@ -90,4 +96,6 @@ public class NuevoInterprete {
         existenerrores = true;
     }
 }
-    
+
+
+

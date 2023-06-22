@@ -91,7 +91,7 @@ public class Parser {
         }else if(!hayErrores){
             System.out.println("Consulta válida");
         }*/
-        return true;
+        return !hayErrores;
     }
 
     void PROGRAM(){
