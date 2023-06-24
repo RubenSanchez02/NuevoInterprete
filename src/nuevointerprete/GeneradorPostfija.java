@@ -116,5 +116,5 @@ public class GeneradorPostfija {
 
         return postfija;
     }
-
+//Agregar if e igual
 }

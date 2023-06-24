@@ -103,6 +103,8 @@ public class Token {
 
     private int obtenerPrecedencia(){
         switch (this.tipo){
+            case PUNTO:
+                return 4:
             case MULTIPLICACION:
             case DIVISION:
                 return 3;
@@ -110,9 +112,10 @@ public class Token {
             case RESTA:
                 return 2;
             case IGUAL:
-                return 1;
             case MAYOR:
             case MAYOR_IGUAL:
+            case MENOR:
+            //Terminar de agregar los nuevos tokens
                 return 1;
         }
 
@@ -128,7 +131,14 @@ public class Token {
             case IGUAL:
             case MAYOR:
             case MAYOR_IGUAL:
+            case ASIGNAR:
+            case MENOR:
+            case MENOR_IGUAL:
+            case Y:
+            case O:
+
                 return 2;
+            case NO:
         }
         return 0;
     }

@@ -16,6 +16,13 @@ public class Arbol {
                 case RESTA:
                 case MULTIPLICACION:
                 case DIVISION:
+                case MENOR:
+                case MENOR_IGUAL:
+                case MAYOR:
+                case MAYOR_IGUAL:
+                case IGUAL:
+                case ASIGNAR:
+                case DIFERENTE_DE:
                     SolverAritmetico solver = new SolverAritmetico(n);
                     Object res = solver.resolver();
                     System.out.println(res);
