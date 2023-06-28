@@ -21,9 +21,6 @@ public class GeneradorAST {
         Nodo padre = raiz;
 
         for(Token t : postfija){
-            if (t.tipo == Tipo_Token.SI){
-
-            }
             if(t.tipo == Tipo_Token.EOF){
                 break;
             }

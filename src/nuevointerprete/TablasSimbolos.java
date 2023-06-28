@@ -18,7 +18,7 @@ public class TablasSimbolos {
         throw new RuntimeException("Variable no definida '" + identificador + "'.");
     }
 
-    void asignar(String identificador, Object valor){
+    static void asignar(String identificador, Object valor){
         values.put(identificador, valor);
     }
 

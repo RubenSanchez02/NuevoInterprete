@@ -1,7 +1,7 @@
 package nuevointerprete;
 
 public class Arbol {
-    private final Nodo raiz;
+    private Nodo raiz;
 
     public Arbol(Nodo raiz){
         this.raiz = raiz;
@@ -30,6 +30,7 @@ public class Arbol {
                 case ASIGNAR:
                     SolverAritmetico solver = new SolverAritmetico();
                     solver.resolver(n);
+                    break;
                 case DIFERENTE_DE:
                     SolverAritmetico solver2 = new SolverAritmetico(n);
                     Object res = solver2.resolver();
@@ -87,6 +88,23 @@ public class Arbol {
 
                         Arbol arbolInstruccion = new Arbol(auxRaiz);
                         arbolInstruccion.recorrer();
+                    }
+                    break;
+                    
+                    case ADEMAS:
+                    if (n.getHijos() == null){
+                        System.err.println("Error : Falta instruccion dentro del sino");
+                        System.exit(1);
+                    }
+                    Arbol arbolElseInstr = new Arbol();
+                    Nodo auxRaiz = new Nodo(null);
+
+                    for (int i = 0; i < n.getHijos().size(); i++){
+                        Nodo instruccion = n.getHijos().get(i);
+                        auxRaiz.insertarHijo(instruccion);
+                        arbolElseInstr.setRaiz(auxRaiz);
+                        arbolElseInstr.recorrer();
+                        auxRaiz.clear();
                     }
                     break;
                     

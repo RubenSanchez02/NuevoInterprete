@@ -65,7 +65,10 @@ public class NuevoInterprete {
         /*for(Token token : tokens){
             System.out.println(token);
         }*/
+        
         Parser parser = new Parser(tokens);
+        parser.parse();
+        /*Parser parser = new Parser(tokens);
         //cachar el booleano
         boolean pser = parser.parse();
 
@@ -80,7 +83,7 @@ public class NuevoInterprete {
         } else {
             System.out.println("Pues no chavo");
 
-        }
+        }*/
 
 
     }

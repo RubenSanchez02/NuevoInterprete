@@ -73,7 +73,7 @@ public class GeneradorPostfija {
                 }
                 if (!pila.isEmpty() && t.tipo == Tipo_Token.RESTA){
                     if (infija.get(i - 1).tipo != Tipo_Token.NUMERO && infija.get(i - 1).tipo != Tipo_Token.IDENTIFICADOR){
-                        Token cero = new Token(Tipo_Token.NUMERO, "0", 0.0, 0, 0);
+                        Token cero = new Token(Tipo_Token.NUMERO, "0", 0.0, 0);
                         postfija.add(cero);
                     }
                 }
@@ -105,7 +105,9 @@ public class GeneradorPostfija {
                     // El cual se extrae y se añade un ";" a cadena postfija,
                     // El cual servirá para indicar que se finaliza la estructura
                     // de control.
-                    pila.pop();
+                    if(!pila.isEmpty()){
+                        pila.pop();
+                    }
                     postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
 
                     // Se extrae de la pila de estrucuras de control, el elemento en el tope

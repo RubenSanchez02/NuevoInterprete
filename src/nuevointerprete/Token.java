@@ -29,6 +29,10 @@ public class Token {
         this.linea = 0;
     }
     
+      public boolean equals(Tipo_Token tipo){
+        return this.tipo == tipo;
+    }
+      
    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Token)) {
@@ -143,6 +147,7 @@ public class Token {
             case MAYOR_IGUAL:
             case MENOR:
             case MENOR_IGUAL:
+            case DIFERENTE_DE:
             //Terminar de agregar los nuevos tokens
                 return 1;
         }
@@ -168,6 +173,7 @@ public class Token {
 
                 return 2;
             case NO:
+                return 1;
         }
         return 0;
     }
