@@ -11,17 +11,37 @@ public class SolverAritmetico {
     public Object resolver(){
         return resolver(nodo);
     }
-    private Object resolver(Nodo n){
+    private Object resolver(Nodo n)
+    {
         // No tiene hijos, es un operando
-        if(n.getHijos() == null){
-            if(n.getValue().tipo == Tipo_Token.NUMERO || n.getValue().tipo == Tipo_Token.CADENA){
+        if(n.getHijos() == null)
+        {
+            if (n.getValue().tipo == Tipo_Token.NUMERO || n.getValue().tipo == Tipo_Token.CADENA)
+            {
                 return n.getValue().literal;
             }
-            else if(n.getValue().tipo == Tipo_Token.IDENTIFICADOR){
+            else if (n.getValue().tipo == Tipo_Token.IDENTIFICADOR)
+            {
                 // Ver la tabla de símbolos
+                if (TablasSimbolos.existeIdentificador(n.getValue().lexema) == true)
+                {
+                    return TablasSimbolos.obtener(n.getValue().lexema);
+                }
+                else
+                {
+                    System.out.println("La variable " +  n.getValue().lexema + " no existe");
+                    System.exit(1);
+                }
+            }
+            else if (n.getValue().tipo == Tipo_Token.FALSO)
+            {
+                return false;
+            }
+            else if (n.getValue().tipo == Tipo_Token.VERDADERO)
+            {
+                return true;
             }
         }
-
         // Por simplicidad se asume que la lista de hijos del nodo tiene dos elementos
         Nodo izq = n.getHijos().get(0);
         Nodo der = n.getHijos().get(1);
@@ -39,15 +59,57 @@ public class SolverAritmetico {
                     return ((Double)resultadoIzquierdo * (Double) resultadoDerecho);
                 case DIVISION:
                     return ((Double)resultadoIzquierdo / (Double) resultadoDerecho);
+                case MENOR:
+                    return ((Double)resultadoIzquierdo < (Double) resultadoDerecho);
+                case MENOR_IGUAL:
+                    return ((Double)resultadoIzquierdo <= (Double) resultadoDerecho);
+                case MAYOR:
+                    return ((Double)resultadoIzquierdo > (Double) resultadoDerecho);
+                case MAYOR_IGUAL:
+                    return ((Double)resultadoIzquierdo >= (Double) resultadoDerecho);
+                case IGUAL:
+                    return (((Double) resultadoIzquierdo).equals((Double) resultadoDerecho));
+                case DIFERENTE_DE:
+                    return (!((Double) resultadoIzquierdo).equals((Double) resultadoDerecho));
+                case ASIGNAR:
+                    if (izq.getValue().tipo == Tipo_Token.IDENTIFICADOR)
+                    {
+                        TablasSimbolos.asignar(izq.getValue().lexema, resultadoDerecho);
+                    }
+                    break;
+
             }
         }
-        else if(resultadoIzquierdo instanceof String && resultadoDerecho instanceof String){
-            if (n.getValue().tipo == Tipo_Token.SUMA){
+        else if(resultadoIzquierdo instanceof String && resultadoDerecho instanceof String)
+        {
+            if (n.getValue().tipo == Tipo_Token.SUMA)
+            {
                 // Ejecutar la concatenación
+
+                return (String) resultadoIzquierdo + resultadoDerecho;
+            }
+            else
+            {
+                System.out.println("Error. Solo se permite suma para las cadenas");
+                System.exit(1);
+            }
+
+        }
+        else if (resultadoIzquierdo instanceof Boolean && resultadoDerecho instanceof Boolean)
+        {
+            switch (n.getValue().tipo)
+            {
+                case Y:
+                    return ((Boolean) resultadoIzquierdo && (Boolean) resultadoDerecho);
+                case O:
+                    return ((Boolean) resultadoIzquierdo || (Boolean) resultadoDerecho);
             }
         }
-        else{
+        else
+        {
             // Error por diferencia de tipos
+            System.out.println("Error, no se puede realizar operaciones con variables de diferente tipo");
+            System.exit(1);
         }
 
         return null;

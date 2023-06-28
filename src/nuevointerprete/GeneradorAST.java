@@ -73,7 +73,10 @@ public class GeneradorAST
 
                     if(padre.getValue().tipo == Tipo_Token.VARIABLE)
                     {
-
+                        /*
+                        En el caso del VAR, es necesario eliminar el igual que
+                        pudiera aparecer en la raíz del nodo n.
+                         */
                         if(n.getValue().tipo == Tipo_Token.IGUAL)
                         {
                             padre.insertarHijos(n.getHijos());
@@ -99,6 +102,8 @@ public class GeneradorAST
             }
         }
 
+        // Suponiendo que en la pila sólamente queda un nodo
+        // Nodo nodoAux = pila.pop();
         Arbol programa = new Arbol(raiz);
 
         return programa;

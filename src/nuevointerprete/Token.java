@@ -5,48 +5,36 @@
  */
 package nuevointerprete;
 
-/**
- *
- * @author Sanch
- */
+
 public class Token {
+
     final Tipo_Token tipo;
     final String lexema;
     final Object literal;
-    final int linea;
 
-    public Token(Tipo_Token tipo, String lexema, Object literal, int linea) {
+    //final int posicion;
+
+    /*public Token(TipoToken tipo, String lexema,int posicion) {
         this.tipo = tipo;
         this.lexema = lexema;
-        this.literal = literal;
-        this.linea = linea;
-    }
-    
+        this.literal = null;
+        this.posicion = posicion;
+    }*/
+
     public Token(Tipo_Token tipo, String lexema) {
         this.tipo = tipo;
         this.lexema = lexema;
         this.literal = null;
-        this.linea = 0;
-    }
-    
-   @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Token)) {
-            return false;
-        }
-
-        if(this.tipo == ((Token)o).tipo){
-            return true;
-        }
-
-        return false;
     }
 
+    public Token(Tipo_Token tipo, String lexema, Object literal) {
+        this.tipo = tipo;
+        this.lexema = lexema;
+        this.literal = literal;
+    }
 
-    
-    @Override
     public String toString(){
-        return "Linea [" + linea + "]: " + tipo + " " + lexema + " " + literal;
+        return tipo + " " + lexema + " " + (literal == null ? " " : literal.toString());
     }
 
     // Métodos auxiliares
@@ -54,6 +42,7 @@ public class Token {
         switch (this.tipo){
             case IDENTIFICADOR:
             case NUMERO:
+            case CADENA:
                 return true;
             default:
                 return false;
@@ -69,27 +58,42 @@ public class Token {
             case IGUAL:
             case MAYOR:
             case MAYOR_IGUAL:
+                //
+            case MENOR_IGUAL:
+            case MENOR:
+            case DIFERENTE_DE:
+            case ASIGNAR:
+            case Y:
+            case O:
                 return true;
             default:
                 return false;
         }
     }
 
-    public boolean esPalabraReservada(){
-        switch (this.tipo){
+    public boolean esPalabraReservada()
+    {
+        switch (this.tipo)
+        {
             case VARIABLE:
             case SI:
             case IMPRIMIR:
             case ADEMAS:
+            case MIENTRAS:
+            case PARA:
                 return true;
             default:
                 return false;
         }
     }
 
-    public boolean esEstructuraDeControl(){
-        switch (this.tipo){
+    public boolean esEstructuraDeControl()
+    {
+        switch (this.tipo)
+        {
             case SI:
+            case PARA:
+            case MIENTRAS:
             case ADEMAS:
                 return true;
             default:
@@ -97,21 +101,25 @@ public class Token {
         }
     }
 
-    public boolean precedenciaMayorIgual(Token t){
-
+    public boolean precedenciaMayorIgual(Token t)
+    {
         return this.obtenerPrecedencia() >= t.obtenerPrecedencia();
     }
 
-    private int obtenerPrecedencia(){
-        switch (this.tipo){
+    private int obtenerPrecedencia()
+    {
+        switch (this.tipo)
+        {
             case MULTIPLICACION:
             case DIVISION:
                 return 7;
             case SUMA:
             case RESTA:
                 return 6;
-            case MAYOR:
+            case ASIGNAR:
+                return 1;
             case MAYOR_IGUAL:
+            case MAYOR:
             case MENOR:
             case MENOR_IGUAL:
                 return 5;
@@ -122,31 +130,45 @@ public class Token {
                 return 3;
             case O:
                 return 2;
-            case ASIGNAR:
-                return 1;
         }
 
         return 0;
     }
 
-    public int aridad(){
-        switch (this.tipo) {
+    public int aridad()
+    {
+        switch (this.tipo)
+        {
             case MULTIPLICACION:
             case DIVISION:
             case SUMA:
             case RESTA:
             case IGUAL:
+            case ASIGNAR:
             case MAYOR:
             case MAYOR_IGUAL:
-            case ASIGNAR:
-            case MENOR:
             case MENOR_IGUAL:
+            case MENOR:
             case Y:
             case O:
-
                 return 2;
         }
         return 0;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Token))
+        {
+            return false;
+        }
+
+        if(this.tipo == ((Token)o).tipo)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
