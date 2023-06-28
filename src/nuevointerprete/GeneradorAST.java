@@ -3,17 +3,20 @@ package nuevointerprete;
 import java.util.List;
 import java.util.Stack;
 
-public class GeneradorAST {
+public class GeneradorAST
+{
 
     private final List<Token> postfija;
     private final Stack<Nodo> pila;
 
-    public GeneradorAST(List<Token> postfija){
+    public GeneradorAST(List<Token> postfija)
+    {
         this.postfija = postfija;
         this.pila = new Stack<>();
     }
 
-    public Arbol generarAST() {
+    public Arbol generarAST()
+    {
         Stack<Nodo> pilaPadres = new Stack<>();
         Nodo raiz = new Nodo(null);
         pilaPadres.push(raiz);
@@ -21,14 +24,13 @@ public class GeneradorAST {
         Nodo padre = raiz;
 
         for(Token t : postfija){
-            if (t.tipo == Tipo_Token.SI){
-
-            }
-            if(t.tipo == Tipo_Token.EOF){
+            if(t.tipo == Tipo_Token.EOF)
+            {
                 break;
             }
 
-            if(t.esPalabraReservada()){
+            if(t.esPalabraReservada())
+            {
                 Nodo n = new Nodo(t);
 
                 padre = pilaPadres.peek();
@@ -38,22 +40,26 @@ public class GeneradorAST {
                 padre = n;
 
             }
-            else if(t.esOperando()){
+            else if(t.esOperando())
+            {
                 Nodo n = new Nodo(t);
                 pila.push(n);
             }
             else if(t.esOperador()){
                 int aridad = t.aridad();
                 Nodo n = new Nodo(t);
-                for(int i=1; i<=aridad; i++){
+                for(int i=1; i<=aridad; i++)
+                {
                     Nodo nodoAux = pila.pop();
                     n.insertarHijo(nodoAux);
                 }
                 pila.push(n);
             }
-            else if(t.tipo == Tipo_Token.PUNTO_Y_COMA){
+            else if(t.tipo == Tipo_Token.PUNTO_Y_COMA)
+            {
 
-                if (pila.isEmpty()){
+                if (pila.isEmpty())
+                {
                     /*
                     Si la pila esta vacía es porque t es un punto y coma
                     que cierra una estructura de control
@@ -61,40 +67,40 @@ public class GeneradorAST {
                     pilaPadres.pop();
                     padre = pilaPadres.peek();
                 }
-                else{
+                else
+                {
                     Nodo n = pila.pop();
 
-                    if(padre.getValue().tipo == Tipo_Token.VARIABLE){
-                        /*
-                        En el caso del VAR, es necesario eliminar el igual que
-                        pudiera aparecer en la raíz del nodo n.
-                         */
-                        if(n.getValue().tipo == Tipo_Token.IGUAL){
+                    if(padre.getValue().tipo == Tipo_Token.VARIABLE)
+                    {
+
+                        if(n.getValue().tipo == Tipo_Token.IGUAL)
+                        {
                             padre.insertarHijos(n.getHijos());
                         }
-                        else{
+                        else
+                        {
                             padre.insertarSiguienteHijo(n);
                         }
                         pilaPadres.pop();
                         padre = pilaPadres.peek();
                     }
-                    else if(padre.getValue().tipo == Tipo_Token.IMPRIMIR){
+                    else if(padre.getValue().tipo == Tipo_Token.IMPRIMIR)
+                    {
                         padre.insertarSiguienteHijo(n);
                         pilaPadres.pop();
                         padre = pilaPadres.peek();
                     }
-                    else {
+                    else
+                    {
                         padre.insertarSiguienteHijo(n);
                     }
                 }
             }
         }
 
-        // Suponiendo que en la pila sólamente queda un nodo
-        // Nodo nodoAux = pila.pop();
         Arbol programa = new Arbol(raiz);
 
         return programa;
     }
 }
-//for while if

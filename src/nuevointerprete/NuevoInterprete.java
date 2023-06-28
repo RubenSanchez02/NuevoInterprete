@@ -69,6 +69,8 @@ public class NuevoInterprete {
         //cachar el booleano
         boolean pser = parser.parse();
 
+        TablasSimbolos Tabla = new TablasSimbolos();
+
         if (pser)
         {
             GeneradorPostfija gpf = new GeneradorPostfija(tokens);

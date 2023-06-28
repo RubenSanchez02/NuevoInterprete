@@ -1,6 +1,5 @@
 package nuevointerprete;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -12,14 +11,12 @@ public class GeneradorPostfija {
     private final List<Token> postfija;
 
     public GeneradorPostfija(List<Token> infija) {
-
         this.infija = infija;
         this.pila = new Stack<>();
         this.postfija = new ArrayList<>();
     }
 
     public List<Token> convertir(){
-
         boolean estructuraDeControl = false;
         Stack<Token> pilaEstructurasDeControl = new Stack<>();
 
@@ -55,8 +52,11 @@ public class GeneradorPostfija {
                 if(pila.peek().tipo == Tipo_Token.PARENTESIS_IZQ){
                     pila.pop();
                 }
-                if(estructuraDeControl){
-                    postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null,0));
+
+                // Esta sección de aquí es para manejar el ")" que cierra la
+                // condición de la estructura de control
+                if(estructuraDeControl && infija.get(i + 1).tipo == Tipo_Token.LLAVE_IZQ){
+                    postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
                 }
             }
             else if(t.esOperador()){
@@ -67,7 +67,7 @@ public class GeneradorPostfija {
                 pila.push(t);
             }
             else if(t.tipo == Tipo_Token.PUNTO_Y_COMA){
-                while(!pila.isEmpty() && pila.peek().tipo != Tipo_Token.PARENTESIS_IZQ){
+                while(!pila.isEmpty() && pila.peek().tipo != Tipo_Token.LLAVE_IZQ){
                     Token temp = pila.pop();
                     postfija.add(temp);
                 }
@@ -95,7 +95,16 @@ public class GeneradorPostfija {
                     postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
 
                     // Se extrae de la pila de estrucuras de control, el elemento en el tope
-                    pilaEstructurasDeControl.pop();
+                    Token aux = pilaEstructurasDeControl.pop();
+
+                    /*
+                        Si se da este caso, es necesario extraer el IF de la pila
+                        pilaEstructurasDeControl, y agregar los ";" correspondientes
+                     */
+                    if(aux.tipo == Tipo_Token.ADEMAS){
+                        pilaEstructurasDeControl.pop();
+                        postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
+                    }
                     if(pilaEstructurasDeControl.isEmpty()){
                         estructuraDeControl = false;
                     }
@@ -111,10 +120,10 @@ public class GeneradorPostfija {
 
         while(!pilaEstructurasDeControl.isEmpty()){
             pilaEstructurasDeControl.pop();
-            postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null,0 ));
+            postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
         }
 
         return postfija;
     }
-//Agregar if e igual
+
 }

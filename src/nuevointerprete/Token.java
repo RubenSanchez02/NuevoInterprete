@@ -98,24 +98,31 @@ public class Token {
     }
 
     public boolean precedenciaMayorIgual(Token t){
+
         return this.obtenerPrecedencia() >= t.obtenerPrecedencia();
     }
 
     private int obtenerPrecedencia(){
         switch (this.tipo){
-            case PUNTO:
-                return 4:
             case MULTIPLICACION:
             case DIVISION:
-                return 3;
+                return 7;
             case SUMA:
             case RESTA:
-                return 2;
-            case IGUAL:
+                return 6;
             case MAYOR:
             case MAYOR_IGUAL:
             case MENOR:
-            //Terminar de agregar los nuevos tokens
+            case MENOR_IGUAL:
+                return 5;
+            case DIFERENTE_DE:
+            case IGUAL:
+                return 4;
+            case Y:
+                return 3;
+            case O:
+                return 2;
+            case ASIGNAR:
                 return 1;
         }
 
@@ -138,8 +145,8 @@ public class Token {
             case O:
 
                 return 2;
-            case NO:
         }
         return 0;
     }
+
 }
