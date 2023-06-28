@@ -8,6 +8,7 @@ package nuevointerprete;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -66,19 +67,18 @@ public class NuevoInterprete {
             System.out.println(token);
         }*/
         Parser parser = new Parser(tokens);
-        //cachar el booleano
+        //cachar el booleanovariable nombre = "Gabriel"; variable apellido = "Rodriguez"; imprimir nombre + " " + apellido +  edad;
         boolean pser = parser.parse();
 
-        TablasSimbolos Tabla = new TablasSimbolos();
+        TablasSimbolos tablita = new TablasSimbolos();
 
         if (pser)
         {
             GeneradorPostfija gpf = new GeneradorPostfija(tokens);
             List<Token> postfija = gpf.convertir();
             GeneradorAST gast = new GeneradorAST(postfija);
-            Arbol programa= gast.generarAST();
+            Arbol programa = gast.generarAST();
             programa.recorrer();
-            System.out.println("si jala");
         } else {
             System.out.println("Pues no chavo");
 

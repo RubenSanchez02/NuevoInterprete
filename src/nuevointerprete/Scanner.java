@@ -516,7 +516,7 @@ public class Scanner {
                     throw new RuntimeException("No se que es esto:" + flujo);
             }
         }
-        tokens.add(new Token(Tipo_Token.EOF, "", null, linea));
+        tokens.add(new Token(Tipo_Token.EOF, "", linea));
         return tokens;
     }
     
@@ -524,11 +524,11 @@ public class Scanner {
         if(tipo == Tipo_Token.IDENTIFICADOR){
             tipo = palabrasReservadas.getOrDefault(lexema, Tipo_Token.IDENTIFICADOR);
         }
-        tokens.add(new Token(tipo, lexema, null, linea));
+        tokens.add(new Token(tipo, lexema,  linea));
         this.lexema.delete(0,this.lexema.length());
     }
     private void AgregaToken(Tipo_Token tipo, String lexema, Object literal){
-        tokens.add(new Token(tipo, lexema, literal, linea));
+        tokens.add(new Token(tipo, lexema, literal ));
         this.lexema.delete(0,this.lexema.length());
     }
     private int incrementaLinea(char flujo){

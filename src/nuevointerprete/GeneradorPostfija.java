@@ -56,7 +56,7 @@ public class GeneradorPostfija {
                 // Esta sección de aquí es para manejar el ")" que cierra la
                 // condición de la estructura de control
                 if(estructuraDeControl && infija.get(i + 1).tipo == Tipo_Token.LLAVE_IZQ){
-                    postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
+                    postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null));
                 }
             }
             else if(t.esOperador()){
@@ -91,8 +91,11 @@ public class GeneradorPostfija {
                     // El cual se extrae y se añade un ";" a cadena postfija,
                     // El cual servirá para indicar que se finaliza la estructura
                     // de control.
-                    pila.pop();
-                    postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
+                    if(!pila.isEmpty())
+                    {
+                        pila.pop();
+                    }
+                    postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null));
 
                     // Se extrae de la pila de estrucuras de control, el elemento en el tope
                     Token aux = pilaEstructurasDeControl.pop();
@@ -103,7 +106,7 @@ public class GeneradorPostfija {
                      */
                     if(aux.tipo == Tipo_Token.ADEMAS){
                         pilaEstructurasDeControl.pop();
-                        postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
+                        postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null));
                     }
                     if(pilaEstructurasDeControl.isEmpty()){
                         estructuraDeControl = false;
@@ -120,7 +123,7 @@ public class GeneradorPostfija {
 
         while(!pilaEstructurasDeControl.isEmpty()){
             pilaEstructurasDeControl.pop();
-            postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null, 0));
+            postfija.add(new Token(Tipo_Token.PUNTO_Y_COMA, ";", null));
         }
 
         return postfija;

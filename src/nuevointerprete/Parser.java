@@ -78,7 +78,6 @@ public class Parser {
         preanalisis = tokens.get(i);
         PROGRAM();
         if(!hayErrores && !preanalisis.equals(finCadena)){
-            System.out.println("Error en la posición " + preanalisis.linea + ". No se esperaba el token " + preanalisis.tipo);
             return false;
         }
         else if(!hayErrores && preanalisis.equals(finCadena)){
@@ -703,7 +702,6 @@ public class Parser {
         }
         else{
             hayErrores = true;
-            System.out.println(preanalisis.linea + ") Error en la posición: " + i + " Se esperaba un:  " + t.tipo);
 
         }
     }
